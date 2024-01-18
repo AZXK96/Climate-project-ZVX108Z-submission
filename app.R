@@ -187,11 +187,12 @@ ui <- fluidPage(
     tabPanel(
       title = "References",
       fluidRow(
-        sidebarPanel("LCSC: Climatology and Climate Services Laboratory. 2023. SPEI series for world countries. Retrieved November 2, 2024, from https://lcsc.csic.es/software-2/spei-countries-of-the-world/"),
         sidebarPanel("FAOSTAT. 2023. Retrieved December 18, 2023, from https://www.fao.org/faostat/en/#data"),
-        sidebarPanel("World Statistics. 2023. Retrieved November 18, 2023, from http://www.world-statistics.org/"),
+        sidebarPanel("LCSC: Climatology and Climate Services Laboratory. 2023. SPEI series for world countries. Retrieved November 2, 2024, from https://lcsc.csic.es/software-2/spei-countries-of-the-world/"),
+        sidebarPanel("SPEI. (n.d.). Information SPEI, The Standardised Precipitation-Evapotranspiration Index. Retrieved January 8, 2024, from https://spei.csic.es/home.html"),
         sidebarPanel("US EPA. 2016. April 19 Particulate Matter (PM) Basics. [Overviews and Factsheets]. Retrieved January 11, 2024, from https://www.epa.gov/pm-pollution/particulate-matter-pm-basics"),
-        sidebarPanel("SPEI. (n.d.). Information SPEI, The Standardised Precipitation-Evapotranspiration Index. Retrieved January 8, 2024, from https://spei.csic.es/home.html")
+        sidebarPanel("World Statistics. 2023. Retrieved November 18, 2023, from http://www.world-statistics.org/"),
+        sidebarPanel("Worldbank. (n.d.). PM2.5 air pollution, mean annual exposure (micrograms per cubic meter) | Data. Retrieved January 15, 2024, from https://data.worldbank.org/indicator/EN.ATM.PM25.MC.M3")
       ),
     ),
   ),
