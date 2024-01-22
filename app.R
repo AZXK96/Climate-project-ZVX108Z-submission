@@ -217,7 +217,7 @@ server <- function(input, output, session) {
   if(!file.exists(dest_file1)){
     download.file(url1, dest_file1)
   }
-  
+  unzip(dest_file1, exdir = dir1)
   
   # Pollution
   url2 <- "https://api.worldbank.org/v2/en/indicator/EN.ATM.PM25.MC.M3?downloadformat=csv"
@@ -232,11 +232,11 @@ server <- function(input, output, session) {
   dir2 <- "./data/pollution/"
   
   if(!file.exists(dest_file)){  
-    download.file(url2, dest_file, mode = "wb")
+    download.file(url2, dest_file)
   }
   
   unzip(dest_file, exdir = dir2)
-  wb_pollution <- read_delim("./data/pollution/API_EN.ATM.PM25.MC.M3_DS2_en_csv_v2_5995582.csv", 
+  wb_pollution <- read_delim("./data/pollution/API_EN.ATM.PM25.MC.M3_DS2_en_csv_v2_6299930.csv", 
                              delim = ",", skip = 3, escape_double = FALSE, trim_ws = TRUE)
   
   # Temperature
@@ -265,7 +265,7 @@ server <- function(input, output, session) {
   dest_file01 <- "./data/agro_prod.zip"
   dir01 <- "./data/fao/"
   
-  if(!file.exists(dest_file)){
+  if(!file.exists(dest_file01)){
     download.file(url01, dest_file01)
   }
   
@@ -279,7 +279,7 @@ server <- function(input, output, session) {
   dest_file02 <- "./data/land_use.zip"
   dir02 <- "./data/fao/"
   
-  if(!file.exists(dest_file)){
+  if(!file.exists(dest_file02)){
    download.file(url02, dest_file02)
   }
   
@@ -293,7 +293,7 @@ server <- function(input, output, session) {
   dest_file03 <- "./data/food_supply.zip"
   dir03 <- "./data/fao/"
   
-  if(!file.exists(dest_file)){
+  if(!file.exists(dest_file03)){
     download.file(url03, dest_file03)
   }
   
@@ -668,6 +668,230 @@ server <- function(input, output, session) {
     fao_live_Bol <- cbind(tempc, temp)
     fao_live_Bol <- merge(tempb, fao_live_Bol)
   }
+  
+  # additional climate indices
+  # PM 2.5
+{
+  wb_clim_Syr <- wb_pollution[wb_pollution$`Country Name` == "Syrian Arab Republic",]
+  time_list <- c("1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969", "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")
+  temp <- t(subset(wb_clim_Syr[,time_list]))
+  rownames(temp) <- c(1:length(time_list))
+  colnames(temp) <- "Value"
+  tempc <- as.data.frame(c(1:length(time_list)))
+  colnames(tempc) <- "Year"
+  tempc$Year <- tempc$Year + 1960
+  tempb <- subset(wb_clim_Syr[,c("Country Name", "Indicator Name")])
+  wb_clim_Syr <- cbind(tempc, temp)
+  wb_clim_Syr <- merge(tempb, wb_clim_Syr)
+  
+  wb_clim_Saf <- wb_pollution[wb_pollution$`Country Name` == "South Africa",]
+  time_list <- c("1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969", "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")
+  temp <- t(subset(wb_clim_Saf[,time_list]))
+  rownames(temp) <- c(1:length(time_list))
+  colnames(temp) <- "Value"
+  tempc <- as.data.frame(c(1:length(time_list)))
+  colnames(tempc) <- "Year"
+  tempc$Year <- tempc$Year + 1960
+  tempb <- subset(wb_clim_Saf[,c("Country Name", "Indicator Name")])
+  wb_clim_Saf <- cbind(tempc, temp)
+  wb_clim_Saf <- merge(tempb, wb_clim_Saf)
+  
+  wb_clim_Peru <- wb_pollution[wb_pollution$`Country Name` == "Peru",]
+  time_list <- c("1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969", "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")
+  temp <- t(subset(wb_clim_Peru[,time_list]))
+  rownames(temp) <- c(1:length(time_list))
+  colnames(temp) <- "Value"
+  tempc <- as.data.frame(c(1:length(time_list)))
+  colnames(tempc) <- "Year"
+  tempc$Year <- tempc$Year + 1960
+  tempb <- subset(wb_clim_Peru[,c("Country Name", "Indicator Name")])
+  wb_clim_Peru <- cbind(tempc, temp)
+  wb_clim_Peru <- merge(tempb, wb_clim_Peru)
+  
+  wb_clim_Jor <- wb_pollution[wb_pollution$`Country Name` == "Jordan",]
+  time_list <- c("1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969", "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")
+  temp <- t(subset(wb_clim_Jor[,time_list]))
+  rownames(temp) <- c(1:length(time_list))
+  colnames(temp) <- "Value"
+  tempc <- as.data.frame(c(1:length(time_list)))
+  colnames(tempc) <- "Year"
+  tempc$Year <- tempc$Year + 1960
+  tempb <- subset(wb_clim_Jor[,c("Country Name", "Indicator Name")])
+  wb_clim_Jor <- cbind(tempc, temp)
+  wb_clim_Jor <- merge(tempb, wb_clim_Jor)
+  
+  wb_clim_Ang <- wb_pollution[wb_pollution$`Country Name` == "Angola",]
+  time_list <- c("1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969", "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")
+  temp <- t(subset(wb_clim_Ang[,time_list]))
+  rownames(temp) <- c(1:length(time_list))
+  colnames(temp) <- "Value"
+  tempc <- as.data.frame(c(1:length(time_list)))
+  colnames(tempc) <- "Year"
+  tempc$Year <- tempc$Year + 1960
+  tempb <- subset(wb_clim_Ang[,c("Country Name", "Indicator Name")])
+  wb_clim_Ang <- cbind(tempc, temp)
+  wb_clim_Ang <- merge(tempb, wb_clim_Ang)
+  
+  wb_clim_Col <- wb_pollution[wb_pollution$`Country Name` == "Colombia",]
+  time_list <- c("1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969", "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")
+  temp <- t(subset(wb_clim_Col[,time_list]))
+  rownames(temp) <- c(1:length(time_list))
+  colnames(temp) <- "Value"
+  tempc <- as.data.frame(c(1:length(time_list)))
+  colnames(tempc) <- "Year"
+  tempc$Year <- tempc$Year + 1960
+  tempb <- subset(wb_clim_Col[,c("Country Name", "Indicator Name")])
+  wb_clim_Col <- cbind(tempc, temp)
+  wb_clim_Col <- merge(tempb, wb_clim_Col)
+  
+  wb_clim_Iran <- wb_pollution[wb_pollution$`Country Name` == "Iran, Islamic Rep.",]
+  time_list <- c("1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969", "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")
+  temp <- t(subset(wb_clim_Iran[,time_list]))
+  rownames(temp) <- c(1:length(time_list))
+  colnames(temp) <- "Value"
+  tempc <- as.data.frame(c(1:length(time_list)))
+  colnames(tempc) <- "Year"
+  tempc$Year <- tempc$Year + 1960
+  tempb <- subset(wb_clim_Iran[,c("Country Name", "Indicator Name")])
+  wb_clim_Iran <- cbind(tempc, temp)
+  wb_clim_Iran <- merge(tempb, wb_clim_Iran)
+  
+  wb_clim_Nam <- wb_pollution[wb_pollution$`Country Name` == "Namibia",]
+  time_list <- c("1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969", "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")
+  temp <- t(subset(wb_clim_Nam[,time_list]))
+  rownames(temp) <- c(1:length(time_list))
+  colnames(temp) <- "Value"
+  tempc <- as.data.frame(c(1:length(time_list)))
+  colnames(tempc) <- "Year"
+  tempc$Year <- tempc$Year + 1960
+  tempb <- subset(wb_clim_Nam[,c("Country Name", "Indicator Name")])
+  wb_clim_Nam <- cbind(tempc, temp)
+  wb_clim_Nam <- merge(tempb, wb_clim_Nam)
+  
+  wb_clim_Bol <- wb_pollution[wb_pollution$`Country Name` == "Bolivia",]
+  time_list <- c("1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969", "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")
+  temp <- t(subset(wb_clim_Bol[,time_list]))
+  rownames(temp) <- c(1:length(time_list))
+  colnames(temp) <- "Value"
+  tempc <- as.data.frame(c(1:length(time_list)))
+  colnames(tempc) <- "Year"
+  tempc$Year <- tempc$Year + 1960
+  tempb <- subset(wb_clim_Bol[,c("Country Name", "Indicator Name")])
+  wb_clim_Bol <- cbind(tempc, temp)
+  wb_clim_Bol <- merge(tempb, wb_clim_Bol)
+}  
+  
+  # Temperature change
+{
+  fao_clim_Syr <- fao_dtemp[fao_dtemp$Months == "Meteorological year" & fao_dtemp$Area == "Syrian Arab Republic" & fao_dtemp$Element == "Temperature change",]
+  time_list <- c("Y1961", "Y1962", "Y1963", "Y1964", "Y1965", "Y1966", "Y1967", "Y1968", "Y1969", "Y1970", "Y1971", "Y1972", "Y1973", "Y1974", "Y1975", "Y1976", "Y1977", "Y1978", "Y1979", "Y1980", "Y1981", "Y1982", "Y1983", "Y1984", "Y1985", "Y1986", "Y1987", "Y1988", "Y1989", "Y1990", "Y1991", "Y1992", "Y1993", "Y1994", "Y1995", "Y1996", "Y1997", "Y1998", "Y1999", "Y2000", "Y2001", "Y2002", "Y2003", "Y2004", "Y2005", "Y2006", "Y2007", "Y2008", "Y2009", "Y2010", "Y2011", "Y2012", "Y2013", "Y2014", "Y2015", "Y2016", "Y2017", "Y2018", "Y2019", "Y2020")
+  temp <- t(subset(fao_clim_Syr[,time_list]))
+  rownames(temp) <- c(1:length(time_list))
+  colnames(temp) <- "Value"
+  tempc <- as.data.frame(c(1:length(time_list)))
+  colnames(tempc) <- "Year"
+  tempc$Year <- tempc$Year + 1960
+  tempb <- subset(fao_clim_Syr[,c("Area", "Months", "Element", "Unit")])
+  fao_clim_Syr <- cbind(tempc, temp)
+  fao_clim_Syr <- merge(tempb, fao_clim_Syr)
+  
+  fao_clim_Saf <- fao_dtemp[fao_dtemp$Months == "Meteorological year" & fao_dtemp$Area == "South Africa" & fao_dtemp$Element == "Temperature change",]
+  time_list <- c("Y1961", "Y1962", "Y1963", "Y1964", "Y1965", "Y1966", "Y1967", "Y1968", "Y1969", "Y1970", "Y1971", "Y1972", "Y1973", "Y1974", "Y1975", "Y1976", "Y1977", "Y1978", "Y1979", "Y1980", "Y1981", "Y1982", "Y1983", "Y1984", "Y1985", "Y1986", "Y1987", "Y1988", "Y1989", "Y1990", "Y1991", "Y1992", "Y1993", "Y1994", "Y1995", "Y1996", "Y1997", "Y1998", "Y1999", "Y2000", "Y2001", "Y2002", "Y2003", "Y2004", "Y2005", "Y2006", "Y2007", "Y2008", "Y2009", "Y2010", "Y2011", "Y2012", "Y2013", "Y2014", "Y2015", "Y2016", "Y2017", "Y2018", "Y2019", "Y2020")
+  temp <- t(subset(fao_clim_Saf[,time_list]))
+  rownames(temp) <- c(1:length(time_list))
+  colnames(temp) <- "Value"
+  tempc <- as.data.frame(c(1:length(time_list)))
+  colnames(tempc) <- "Year"
+  tempc$Year <- tempc$Year + 1960
+  tempb <- subset(fao_clim_Saf[,c("Area", "Months", "Element", "Unit")])
+  fao_clim_Saf <- cbind(tempc, temp)
+  fao_clim_Saf <- merge(tempb, fao_clim_Saf)
+  
+  fao_clim_Peru <- fao_dtemp[fao_dtemp$Months == "Meteorological year" & fao_dtemp$Area == "Peru" & fao_dtemp$Element == "Temperature change",]
+  time_list <- c("Y1961", "Y1962", "Y1963", "Y1964", "Y1965", "Y1966", "Y1967", "Y1968", "Y1969", "Y1970", "Y1971", "Y1972", "Y1973", "Y1974", "Y1975", "Y1976", "Y1977", "Y1978", "Y1979", "Y1980", "Y1981", "Y1982", "Y1983", "Y1984", "Y1985", "Y1986", "Y1987", "Y1988", "Y1989", "Y1990", "Y1991", "Y1992", "Y1993", "Y1994", "Y1995", "Y1996", "Y1997", "Y1998", "Y1999", "Y2000", "Y2001", "Y2002", "Y2003", "Y2004", "Y2005", "Y2006", "Y2007", "Y2008", "Y2009", "Y2010", "Y2011", "Y2012", "Y2013", "Y2014", "Y2015", "Y2016", "Y2017", "Y2018", "Y2019", "Y2020")
+  temp <- t(subset(fao_clim_Peru[,time_list]))
+  rownames(temp) <- c(1:length(time_list))
+  colnames(temp) <- "Value"
+  tempc <- as.data.frame(c(1:length(time_list)))
+  colnames(tempc) <- "Year"
+  tempc$Year <- tempc$Year + 1960
+  tempb <- subset(fao_clim_Peru[,c("Area", "Months", "Element", "Unit")])
+  fao_clim_Peru <- cbind(tempc, temp)
+  fao_clim_Peru <- merge(tempb, fao_clim_Peru)
+  
+  fao_clim_Jor <- fao_dtemp[fao_dtemp$Months == "Meteorological year" & fao_dtemp$Area == "Jordan" & fao_dtemp$Element == "Temperature change",]
+  time_list <- c("Y1961", "Y1962", "Y1963", "Y1964", "Y1965", "Y1966", "Y1967", "Y1968", "Y1969", "Y1970", "Y1971", "Y1972", "Y1973", "Y1974", "Y1975", "Y1976", "Y1977", "Y1978", "Y1979", "Y1980", "Y1981", "Y1982", "Y1983", "Y1984", "Y1985", "Y1986", "Y1987", "Y1988", "Y1989", "Y1990", "Y1991", "Y1992", "Y1993", "Y1994", "Y1995", "Y1996", "Y1997", "Y1998", "Y1999", "Y2000", "Y2001", "Y2002", "Y2003", "Y2004", "Y2005", "Y2006", "Y2007", "Y2008", "Y2009", "Y2010", "Y2011", "Y2012", "Y2013", "Y2014", "Y2015", "Y2016", "Y2017", "Y2018", "Y2019", "Y2020")
+  temp <- t(subset(fao_clim_Jor[,time_list]))
+  rownames(temp) <- c(1:length(time_list))
+  colnames(temp) <- "Value"
+  tempc <- as.data.frame(c(1:length(time_list)))
+  colnames(tempc) <- "Year"
+  tempc$Year <- tempc$Year + 1960
+  tempb <- subset(fao_clim_Jor[,c("Area", "Months", "Element", "Unit")])
+  fao_clim_Jor <- cbind(tempc, temp)
+  fao_clim_Jor <- merge(tempb, fao_clim_Jor)
+  
+  fao_clim_Ang <- fao_dtemp[fao_dtemp$Months == "Meteorological year" & fao_dtemp$Area == "Angola" & fao_dtemp$Element == "Temperature change",]
+  time_list <- c("Y1961", "Y1962", "Y1963", "Y1964", "Y1965", "Y1966", "Y1967", "Y1968", "Y1969", "Y1970", "Y1971", "Y1972", "Y1973", "Y1974", "Y1975", "Y1976", "Y1977", "Y1978", "Y1979", "Y1980", "Y1981", "Y1982", "Y1983", "Y1984", "Y1985", "Y1986", "Y1987", "Y1988", "Y1989", "Y1990", "Y1991", "Y1992", "Y1993", "Y1994", "Y1995", "Y1996", "Y1997", "Y1998", "Y1999", "Y2000", "Y2001", "Y2002", "Y2003", "Y2004", "Y2005", "Y2006", "Y2007", "Y2008", "Y2009", "Y2010", "Y2011", "Y2012", "Y2013", "Y2014", "Y2015", "Y2016", "Y2017", "Y2018", "Y2019", "Y2020")
+  temp <- t(subset(fao_clim_Ang[,time_list]))
+  rownames(temp) <- c(1:length(time_list))
+  colnames(temp) <- "Value"
+  tempc <- as.data.frame(c(1:length(time_list)))
+  colnames(tempc) <- "Year"
+  tempc$Year <- tempc$Year + 1960
+  tempb <- subset(fao_clim_Ang[,c("Area", "Months", "Element", "Unit")])
+  fao_clim_Ang <- cbind(tempc, temp)
+  fao_clim_Ang <- merge(tempb, fao_clim_Ang)
+  
+  fao_clim_Col <- fao_dtemp[fao_dtemp$Months == "Meteorological year" & fao_dtemp$Area == "Colombia" & fao_dtemp$Element == "Temperature change",]
+  time_list <- c("Y1961", "Y1962", "Y1963", "Y1964", "Y1965", "Y1966", "Y1967", "Y1968", "Y1969", "Y1970", "Y1971", "Y1972", "Y1973", "Y1974", "Y1975", "Y1976", "Y1977", "Y1978", "Y1979", "Y1980", "Y1981", "Y1982", "Y1983", "Y1984", "Y1985", "Y1986", "Y1987", "Y1988", "Y1989", "Y1990", "Y1991", "Y1992", "Y1993", "Y1994", "Y1995", "Y1996", "Y1997", "Y1998", "Y1999", "Y2000", "Y2001", "Y2002", "Y2003", "Y2004", "Y2005", "Y2006", "Y2007", "Y2008", "Y2009", "Y2010", "Y2011", "Y2012", "Y2013", "Y2014", "Y2015", "Y2016", "Y2017", "Y2018", "Y2019", "Y2020")
+  temp <- t(subset(fao_clim_Col[,time_list]))
+  rownames(temp) <- c(1:length(time_list))
+  colnames(temp) <- "Value"
+  tempc <- as.data.frame(c(1:length(time_list)))
+  colnames(tempc) <- "Year"
+  tempc$Year <- tempc$Year + 1960
+  tempb <- subset(fao_clim_Col[,c("Area", "Months", "Element", "Unit")])
+  fao_clim_Col <- cbind(tempc, temp)
+  fao_clim_Col <- merge(tempb, fao_clim_Col)
+  
+  fao_clim_Iran <- fao_dtemp[fao_dtemp$Months == "Meteorological year" & fao_dtemp$Area == "Iran (Islamic Republic of)" & fao_dtemp$Element == "Temperature change",]
+  time_list <- c("Y1961", "Y1962", "Y1963", "Y1964", "Y1965", "Y1966", "Y1967", "Y1968", "Y1969", "Y1970", "Y1971", "Y1972", "Y1973", "Y1974", "Y1975", "Y1976", "Y1977", "Y1978", "Y1979", "Y1980", "Y1981", "Y1982", "Y1983", "Y1984", "Y1985", "Y1986", "Y1987", "Y1988", "Y1989", "Y1990", "Y1991", "Y1992", "Y1993", "Y1994", "Y1995", "Y1996", "Y1997", "Y1998", "Y1999", "Y2000", "Y2001", "Y2002", "Y2003", "Y2004", "Y2005", "Y2006", "Y2007", "Y2008", "Y2009", "Y2010", "Y2011", "Y2012", "Y2013", "Y2014", "Y2015", "Y2016", "Y2017", "Y2018", "Y2019", "Y2020")
+  temp <- t(subset(fao_clim_Iran[,time_list]))
+  rownames(temp) <- c(1:length(time_list))
+  colnames(temp) <- "Value"
+  tempc <- as.data.frame(c(1:length(time_list)))
+  colnames(tempc) <- "Year"
+  tempc$Year <- tempc$Year + 1960
+  tempb <- subset(fao_clim_Iran[,c("Area", "Months", "Element", "Unit")])
+  fao_clim_Iran <- cbind(tempc, temp)
+  fao_clim_Iran <- merge(tempb, fao_clim_Iran)
+  
+  fao_clim_Nam <- fao_dtemp[fao_dtemp$Months == "Meteorological year" & fao_dtemp$Area == "Namibia" & fao_dtemp$Element == "Temperature change",]
+  time_list <- c("Y1961", "Y1962", "Y1963", "Y1964", "Y1965", "Y1966", "Y1967", "Y1968", "Y1969", "Y1970", "Y1971", "Y1972", "Y1973", "Y1974", "Y1975", "Y1976", "Y1977", "Y1978", "Y1979", "Y1980", "Y1981", "Y1982", "Y1983", "Y1984", "Y1985", "Y1986", "Y1987", "Y1988", "Y1989", "Y1990", "Y1991", "Y1992", "Y1993", "Y1994", "Y1995", "Y1996", "Y1997", "Y1998", "Y1999", "Y2000", "Y2001", "Y2002", "Y2003", "Y2004", "Y2005", "Y2006", "Y2007", "Y2008", "Y2009", "Y2010", "Y2011", "Y2012", "Y2013", "Y2014", "Y2015", "Y2016", "Y2017", "Y2018", "Y2019", "Y2020")
+  temp <- t(subset(fao_clim_Nam[,time_list]))
+  rownames(temp) <- c(1:length(time_list))
+  colnames(temp) <- "Value"
+  tempc <- as.data.frame(c(1:length(time_list)))
+  colnames(tempc) <- "Year"
+  tempc$Year <- tempc$Year + 1960
+  tempb <- subset(fao_clim_Nam[,c("Area", "Months", "Element", "Unit")])
+  fao_clim_Nam <- cbind(tempc, temp)
+  fao_clim_Nam <- merge(tempb, fao_clim_Nam)
+  
+  fao_clim_Bol <- fao_dtemp[fao_dtemp$Months == "Meteorological year" & fao_dtemp$Area == "Bolivia (Plurinational State of)" & fao_dtemp$Element == "Temperature change",]
+  time_list <- c("Y1961", "Y1962", "Y1963", "Y1964", "Y1965", "Y1966", "Y1967", "Y1968", "Y1969", "Y1970", "Y1971", "Y1972", "Y1973", "Y1974", "Y1975", "Y1976", "Y1977", "Y1978", "Y1979", "Y1980", "Y1981", "Y1982", "Y1983", "Y1984", "Y1985", "Y1986", "Y1987", "Y1988", "Y1989", "Y1990", "Y1991", "Y1992", "Y1993", "Y1994", "Y1995", "Y1996", "Y1997", "Y1998", "Y1999", "Y2000", "Y2001", "Y2002", "Y2003", "Y2004", "Y2005", "Y2006", "Y2007", "Y2008", "Y2009", "Y2010", "Y2011", "Y2012", "Y2013", "Y2014", "Y2015", "Y2016", "Y2017", "Y2018", "Y2019", "Y2020")
+  temp <- t(subset(fao_clim_Bol[,time_list]))
+  rownames(temp) <- c(1:length(time_list))
+  colnames(temp) <- "Value"
+  tempc <- as.data.frame(c(1:length(time_list)))
+  colnames(tempc) <- "Year"
+  tempc$Year <- tempc$Year + 1960
+  tempb <- subset(fao_clim_Bol[,c("Area", "Months", "Element", "Unit")])
+  fao_clim_Bol <- cbind(tempc, temp)
+  fao_clim_Bol <- merge(tempb, fao_clim_Bol)
+  fao_clim_Bol <- merge(tempb, fao_clim_Bol)
+}
   
   # Correlations 
   {
